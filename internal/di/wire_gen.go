@@ -8,6 +8,7 @@ package di
 import (
 	"rpcdemo/internal/dao"
 	"rpcdemo/internal/server/grpc"
+	"rpcdemo/internal/server/http"
 	"rpcdemo/internal/service"
 )
 
@@ -44,6 +45,15 @@ func InitApp() (*App, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
+	engine, err := http.New(serviceService)
+	if err != nil {
+		cleanup5()
+		cleanup4()
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
 	server, err := grpc.New(serviceService)
 	if err != nil {
 		cleanup5()
@@ -53,7 +63,7 @@ func InitApp() (*App, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	app, cleanup6, err := NewApp(serviceService, server)
+	app, cleanup6, err := NewApp(serviceService, engine, server)
 	if err != nil {
 		cleanup5()
 		cleanup4()

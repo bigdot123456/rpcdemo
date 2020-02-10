@@ -7,11 +7,12 @@ import (
 	"rpcdemo/internal/dao"
 	"rpcdemo/internal/service"
 	"rpcdemo/internal/server/grpc"
+	"rpcdemo/internal/server/http"
 
 	"github.com/google/wire"
 )
 
 //go:generate kratos t wire
 func InitApp() (*App, func(), error) {
-	panic(wire.Build(dao.Provider, service.Provider, grpc.New, NewApp))
+	panic(wire.Build(dao.Provider, service.Provider, http.New, grpc.New, NewApp))
 }
